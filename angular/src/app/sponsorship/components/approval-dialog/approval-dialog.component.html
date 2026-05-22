@@ -1,0 +1,12 @@
+<div class="modal" *ngIf="visible">
+  <div class="modal-backdrop" (click)="close.emit()"></div>
+  <div class="modal-panel">
+    <h3>{{ title }}</h3>
+    <textarea [(ngModel)]="remarks" placeholder="Enter remarks (optional)"></textarea>
+    <div class="actions">
+      <button (click)="onConfirm(true)">Approve</button>
+      <button (click)="onConfirm(false)" class="danger">Reject</button>
+      <button (click)="close.emit()">Cancel</button>
+    </div>
+  </div>
+</div>

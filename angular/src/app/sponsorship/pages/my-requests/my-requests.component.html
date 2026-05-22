@@ -1,0 +1,32 @@
+<div class="my-requests">
+  <div class="header">
+    <h2>My Requests</h2>
+    <a routerLink="/sponsorship/create" class="btn">Create Request</a>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let it of items">
+        <td>{{ it.title }}</td>
+        <td>{{ it.sponsorshipTypeName }}</td>
+        <td>{{ it.requestedAmount | currency }}</td>
+        <td><app-status-badge [status]="it.status"></app-status-badge></td>
+        <td>{{ it.createdAt | date:'short' }}</td>
+        <td>
+          <a [routerLink]="['/sponsorship/details', it.id]">View</a>
+          <a *ngIf="it.status === 'Draft'" [routerLink]="['/sponsorship/create']" [queryParams]="{ id: it.id }">Edit</a>
+          <a *ngIf="canCancel(it.status)" (click)="onCancel(it.id)">Cancel</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

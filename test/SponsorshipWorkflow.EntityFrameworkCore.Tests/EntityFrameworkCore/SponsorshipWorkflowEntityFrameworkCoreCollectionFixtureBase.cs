@@ -1,0 +1,9 @@
+﻿using SponsorshipWorkflow.EntityFrameworkCore;
+using Xunit;
+
+namespace SponsorshipWorkflow.EntityFrameworkCore;
+
+public class SponsorshipWorkflowEntityFrameworkCoreCollectionFixtureBase : ICollectionFixture<SponsorshipWorkflowEntityFrameworkCoreFixture>
+{
+
+}

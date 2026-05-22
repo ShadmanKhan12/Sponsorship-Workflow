@@ -1,0 +1,6 @@
+.badge { padding:4px 8px; border-radius:12px; font-size:12px; display:inline-block; }
+.badge.draft { background:#f3f4f6; color:#374151 }
+.badge.pending { background:#fff7ed; color:#92400e }
+.badge.approved { background:#ecfdf5; color:#065f46 }
+.badge.rejected { background:#fff1f2; color:#9f1239 }
+.badge.cancelled { background:#f8fafc; color:#374151 }

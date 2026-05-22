@@ -1,0 +1,4 @@
+<div class="create-request">
+  <h2>{{ request ? 'Edit Request' : 'Create Request' }}</h2>
+  <app-request-form [request]="request" [sponsorshipTypes]="sponsorshipTypes" (save)="onSave($event)"></app-request-form>
+</div>

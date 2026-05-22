@@ -1,0 +1,23 @@
+<Solution>
+    <Configurations>
+        <Platform Name="Any CPU" />
+    </Configurations>
+    <Folder Name="/src/">
+        <Project Path="src/SponsorshipWorkflow.Domain/SponsorshipWorkflow.Domain.csproj" />
+        <Project Path="src/SponsorshipWorkflow.Application/SponsorshipWorkflow.Application.csproj" />
+        <Project Path="src/SponsorshipWorkflow.EntityFrameworkCore/SponsorshipWorkflow.EntityFrameworkCore.csproj" />
+        <Project Path="src/SponsorshipWorkflow.Domain.Shared/SponsorshipWorkflow.Domain.Shared.csproj" />
+        <Project Path="src/SponsorshipWorkflow.Application.Contracts/SponsorshipWorkflow.Application.Contracts.csproj" />
+        <Project Path="src/SponsorshipWorkflow.HttpApi/SponsorshipWorkflow.HttpApi.csproj" />
+        <Project Path="src/SponsorshipWorkflow.HttpApi.Client/SponsorshipWorkflow.HttpApi.Client.csproj" />
+        <Project Path="src/SponsorshipWorkflow.HttpApi.Host/SponsorshipWorkflow.HttpApi.Host.csproj" />
+        <Project Path="src/SponsorshipWorkflow.DbMigrator/SponsorshipWorkflow.DbMigrator.csproj" />
+    </Folder>
+    <Folder Name="/test/">
+        <Project Path="test/SponsorshipWorkflow.Application.Tests/SponsorshipWorkflow.Application.Tests.csproj" />
+        <Project Path="test/SponsorshipWorkflow.EntityFrameworkCore.Tests/SponsorshipWorkflow.EntityFrameworkCore.Tests.csproj" />
+        <Project Path="test/SponsorshipWorkflow.TestBase/SponsorshipWorkflow.TestBase.csproj" />
+        <Project Path="test/SponsorshipWorkflow.Domain.Tests/SponsorshipWorkflow.Domain.Tests.csproj" />
+        <Project Path="test/SponsorshipWorkflow.HttpApi.Client.ConsoleTestApp/SponsorshipWorkflow.HttpApi.Client.ConsoleTestApp.csproj" />
+    </Folder>
+</Solution>

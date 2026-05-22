@@ -1,0 +1,10 @@
+<div class="timeline">
+  <div *ngFor="let it of items" class="timeline-item">
+    <div class="time">{{ it.timestamp | date:'short' }}</div>
+    <div class="content">
+      <div class="title">{{ it.action }} — {{ it.user }}</div>
+      <div class="meta">{{ it.previousStatus }} → {{ it.newStatus }}</div>
+      <div class="remarks" *ngIf="it.remarks">{{ it.remarks }}</div>
+    </div>
+  </div>
+</div>

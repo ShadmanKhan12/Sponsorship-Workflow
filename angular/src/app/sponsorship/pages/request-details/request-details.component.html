@@ -1,0 +1,24 @@
+<div class="details" *ngIf="item">
+  <h2>{{ item.title }}</h2>
+  <div class="meta">
+    <div>Requestor: {{ item.requestorName }}</div>
+    <div>Department: {{ item.department }}</div>
+    <div>Type: {{ item.sponsorshipTypeName }}</div>
+    <div>Amount: {{ item.requestedAmount | currency }}</div>
+  </div>
+  <div class="status">
+    <app-status-badge [status]="item.status"></app-status-badge>
+  </div>
+
+  <section class="section">
+    <h3>Workflow History</h3>
+    <app-workflow-timeline [items]="timeline"></app-workflow-timeline>
+  </section>
+
+  <section class="section actions">
+    <button *ngIf="item.status === 'Draft'" (click)="showApproval()">Submit</button>
+    <button *ngIf="item.status === 'PendingManagerApproval'" (click)="showApproval()">Manager Actions</button>
+  </section>
+
+  <app-approval-dialog [visible]="approvalDialogVisible" (confirm)="onApproval($event)" (close)="approvalDialogVisible=false"></app-approval-dialog>
+</div>

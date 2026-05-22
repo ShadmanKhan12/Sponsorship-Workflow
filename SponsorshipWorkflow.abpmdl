@@ -1,0 +1,109 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.LeptonXLiteTheme": {
+      "version": "5.4.0",
+      "isInstalled": true,
+      "creationTime": "05/22/2026 12:24:40 +00:00"
+    },
+    "Volo.Abp.Account": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/22/2026 12:24:40 +00:00"
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/22/2026 12:24:40 +00:00"
+    },
+    "Volo.Abp.Identity": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/22/2026 12:24:40 +00:00"
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/22/2026 12:24:40 +00:00"
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/22/2026 12:24:40 +00:00"
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/22/2026 12:24:40 +00:00"
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/22/2026 12:24:40 +00:00"
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "SponsorshipWorkflow.Application": {
+      "path": "src/SponsorshipWorkflow.Application/SponsorshipWorkflow.Application.abppkg",
+      "folder": "src"
+    },
+    "SponsorshipWorkflow.Application.Tests": {
+      "path": "test/SponsorshipWorkflow.Application.Tests/SponsorshipWorkflow.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "SponsorshipWorkflow.Domain.Shared": {
+      "path": "src/SponsorshipWorkflow.Domain.Shared/SponsorshipWorkflow.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "SponsorshipWorkflow.Application.Contracts": {
+      "path": "src/SponsorshipWorkflow.Application.Contracts/SponsorshipWorkflow.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "SponsorshipWorkflow.HttpApi": {
+      "path": "src/SponsorshipWorkflow.HttpApi/SponsorshipWorkflow.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "SponsorshipWorkflow.HttpApi.Client": {
+      "path": "src/SponsorshipWorkflow.HttpApi.Client/SponsorshipWorkflow.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "SponsorshipWorkflow.EntityFrameworkCore.Tests": {
+      "path": "test/SponsorshipWorkflow.EntityFrameworkCore.Tests/SponsorshipWorkflow.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "SponsorshipWorkflow.EntityFrameworkCore": {
+      "path": "src/SponsorshipWorkflow.EntityFrameworkCore/SponsorshipWorkflow.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "SponsorshipWorkflow.TestBase": {
+      "path": "test/SponsorshipWorkflow.TestBase/SponsorshipWorkflow.TestBase.abppkg",
+      "folder": "test"
+    },
+    "SponsorshipWorkflow.Domain.Tests": {
+      "path": "test/SponsorshipWorkflow.Domain.Tests/SponsorshipWorkflow.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "SponsorshipWorkflow.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/SponsorshipWorkflow.HttpApi.Client.ConsoleTestApp/SponsorshipWorkflow.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "SponsorshipWorkflow.DbMigrator": {
+      "path": "src/SponsorshipWorkflow.DbMigrator/SponsorshipWorkflow.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "SponsorshipWorkflow.HttpApi.Host": {
+      "path": "src/SponsorshipWorkflow.HttpApi.Host/SponsorshipWorkflow.HttpApi.Host.abppkg",
+      "folder": "src"
+    },
+    "SponsorshipWorkflow.Domain": {
+      "path": "src/SponsorshipWorkflow.Domain/SponsorshipWorkflow.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}

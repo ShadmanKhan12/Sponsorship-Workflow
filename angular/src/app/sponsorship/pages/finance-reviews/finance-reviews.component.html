@@ -1,0 +1,17 @@
+<div class="finance-reviews">
+  <h2>Finance Reviews</h2>
+  <table class="table">
+    <thead><tr><th>Title</th><th>Requestor</th><th>Amount</th><th>Submitted</th><th>Actions</th></tr></thead>
+    <tbody>
+      <tr *ngFor="let it of items">
+        <td>{{ it.title }}</td>
+        <td>{{ it.requestorName }}</td>
+        <td>{{ it.requestedAmount | currency }}</td>
+        <td>{{ it.createdAt | date:'short' }}</td>
+        <td><a [routerLink]="['/sponsorship/details', it.id]">View</a> <a (click)="openReview(it)">Review</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <app-approval-dialog [visible]="dialogVisible" (confirm)="onReviewed($event)" (close)="dialogVisible=false"></app-approval-dialog>
+</div>

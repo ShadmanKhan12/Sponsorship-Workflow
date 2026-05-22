@@ -1,0 +1,24 @@
+<div class="admin-dashboard">
+  <h2>Admin - All Requests</h2>
+  <div class="filters">
+    <label>Status</label>
+    <select [(ngModel)]="filters.status">
+      <option value="">All</option>
+      <option value="Draft">Draft</option>
+      <option value="PendingManagerApproval">Pending Manager</option>
+    </select>
+  </div>
+
+  <table class="table">
+    <thead><tr><th>Title</th><th>Requestor</th><th>Dept</th><th>Amount</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr *ngFor="let it of items">
+        <td>{{ it.title }}</td>
+        <td>{{ it.requestorName }}</td>
+        <td>{{ it.department }}</td>
+        <td>{{ it.requestedAmount | currency }}</td>
+        <td><app-status-badge [status]="it.status"></app-status-badge></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

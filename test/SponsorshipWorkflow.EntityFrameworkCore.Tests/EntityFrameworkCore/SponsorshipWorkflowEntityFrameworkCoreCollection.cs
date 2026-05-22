@@ -1,0 +1,9 @@
+﻿using Xunit;
+
+namespace SponsorshipWorkflow.EntityFrameworkCore;
+
+[CollectionDefinition(SponsorshipWorkflowTestConsts.CollectionDefinitionName)]
+public class SponsorshipWorkflowEntityFrameworkCoreCollection : ICollectionFixture<SponsorshipWorkflowEntityFrameworkCoreFixture>
+{
+
+}

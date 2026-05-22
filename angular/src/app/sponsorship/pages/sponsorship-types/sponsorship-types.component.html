@@ -1,0 +1,27 @@
+<div class="types">
+  <h2>Sponsorship Types</h2>
+  <div class="create">
+    <input [(ngModel)]="model.name" placeholder="Name" />
+    <input [(ngModel)]="model.description" placeholder="Description" />
+    <label><input type="checkbox" [(ngModel)]="model.isActive" /> Active</label>
+    <button (click)="create()">Create</button>
+  </div>
+
+  <table class="table">
+    <thead><tr><th>Name</th><th>Description</th><th>Active</th><th>Actions</th></tr></thead>
+    <tbody>
+      <tr *ngFor="let it of items">
+        <td *ngIf="editing?.id !== it.id">{{ it.name }}</td>
+        <td *ngIf="editing?.id === it.id"><input [(ngModel)]="editing.name" /></td>
+        <td *ngIf="editing?.id !== it.id">{{ it.description }}</td>
+        <td *ngIf="editing?.id === it.id"><input [(ngModel)]="editing.description" /></td>
+        <td>{{ it.isActive ? 'Yes' : 'No' }}</td>
+        <td>
+          <button *ngIf="editing?.id !== it.id" (click)="edit(it)">Edit</button>
+          <button *ngIf="editing?.id === it.id" (click)="save()">Save</button>
+          <button (click)="remove(it.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

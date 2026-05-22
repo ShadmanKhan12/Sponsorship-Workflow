@@ -1,0 +1,23 @@
+<div class="manager-approvals">
+  <h2>Pending Manager Approvals</h2>
+  <table class="table">
+    <thead>
+      <tr><th>Title</th><th>Requestor</th><th>Dept</th><th>Amount</th><th>Submitted</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let it of items">
+        <td>{{ it.title }}</td>
+        <td>{{ it.requestorName }}</td>
+        <td>{{ it.department }}</td>
+        <td>{{ it.requestedAmount | currency }}</td>
+        <td>{{ it.createdAt | date:'short' }}</td>
+        <td>
+          <a [routerLink]="['/sponsorship/details', it.id]">View</a>
+          <a (click)="openApproval(it)">Approve/Reject</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <app-approval-dialog [visible]="approvalDialogVisible" (confirm)="onApprove($event)" (close)="approvalDialogVisible=false"></app-approval-dialog>
+</div>

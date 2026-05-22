@@ -1,0 +1,62 @@
+<form [formGroup]="form" class="request-form">
+  <div class="row">
+    <label>Title</label>
+    <input formControlName="title" />
+  </div>
+
+  <div class="row two-cols">
+    <div>
+      <label>Requestor</label>
+      <input formControlName="requestorName" />
+    </div>
+    <div>
+      <label>Department</label>
+      <input formControlName="department" />
+    </div>
+  </div>
+
+  <div class="row two-cols">
+    <div>
+      <label>Sponsorship Type</label>
+      <select formControlName="sponsorshipTypeId">
+        <option value="">Select</option>
+        <option *ngFor="let t of sponsorshipTypes" [value]="t.id">{{ t.name }}</option>
+      </select>
+    </div>
+    <div>
+      <label>Requested Amount</label>
+      <input type="number" formControlName="requestedAmount" />
+    </div>
+  </div>
+
+  <div class="row">
+    <label>Event Name</label>
+    <input formControlName="eventName" />
+  </div>
+
+  <div class="row two-cols">
+    <div>
+      <label>Event Date</label>
+      <input type="date" formControlName="eventDate" />
+    </div>
+    <div>
+      <label>Purpose</label>
+      <textarea formControlName="purpose"></textarea>
+    </div>
+  </div>
+
+  <div class="row">
+    <label>Expected Business Benefit</label>
+    <textarea formControlName="expectedBusinessBenefit"></textarea>
+  </div>
+
+  <div class="row">
+    <label>Remarks</label>
+    <textarea formControlName="remarks"></textarea>
+  </div>
+
+  <div class="actions">
+    <button type="button" (click)="submitDraft()">Save Draft</button>
+    <button type="button" class="primary" (click)="submitFinal()">Submit</button>
+  </div>
+</form>
