@@ -71,12 +71,6 @@ public class SponsorshipWorkflowHttpApiHostModule : AbpModule
                 options.UseAspNetCore();
             });
         });
-        //check libs set to false
-		Configure<AbpMvcLibsOptions>(options =>
-		{
-			options.CheckLibs = false;
-		});
-
 		if (!hostingEnvironment.IsDevelopment())
         {
 			//PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
@@ -103,7 +97,12 @@ public class SponsorshipWorkflowHttpApiHostModule : AbpModule
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
 
-        if (!configuration.GetValue<bool>("App:DisablePII"))
+		Configure<AbpMvcLibsOptions>(options =>
+		{
+			options.CheckLibs = false;
+		});
+
+		if (!configuration.GetValue<bool>("App:DisablePII"))
         {
             Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
             Microsoft.IdentityModel.Logging.IdentityModelEventSource.LogCompleteSecurityArtifact = true;
