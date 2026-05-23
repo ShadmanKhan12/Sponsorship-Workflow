@@ -1,7 +1,7 @@
 import { Environment } from '@abp/ng.core';
 
 const baseUrl = 'https://sponsorship-workflow.vercel.app';
-const apiUrl = 'https://sponsorship-workflow-l8d2.onrender.com';
+const apiUrl = 'https://sponsorship-workflow-l8d2.onrender.com/';
 
 export const environment: Environment = {
   production: true,
