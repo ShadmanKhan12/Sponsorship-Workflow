@@ -1,13 +1,15 @@
 import { Environment } from '@abp/ng.core';
 
-const baseUrl = 'http://localhost:4200';
+const baseUrl = 'https://sponsorship-workflow.vercel.app';
+
+const apiUrl = 'https://sponsorship-workflow-l8d2.onrender.com';
 
 const oAuthConfig = {
-  issuer: 'https://localhost:44363/',
+  issuer: apiUrl,
   redirectUri: baseUrl,
   clientId: 'SponsorshipWorkflow_App',
   responseType: 'code',
-  scope: 'offline_access SponsorshipWorkflow',
+  scope: 'offline_access openid profile email roles SponsorshipWorkflow',
   requireHttps: true,
 };
 
@@ -20,16 +22,16 @@ export const environment = {
   oAuthConfig,
   apis: {
     default: {
-      url: 'https://localhost:44363',
+      url: apiUrl,
       rootNamespace: 'SponsorshipWorkflow',
     },
     AbpAccountPublic: {
-      url: oAuthConfig.issuer,
+      url: apiUrl,
       rootNamespace: 'AbpAccountPublic',
     },
   },
   remoteEnv: {
-    url: '/getEnvConfig',
+    url: `${apiUrl}/getEnvConfig`,
     mergeStrategy: 'deepmerge'
   }
 } as Environment;
