@@ -78,10 +78,11 @@ src/SponsorshipWorkflow.DbMigrator/appsettings.json
 
 # Test Accounts
 
-## Admin Login
+## Admin (Full Permissions)
 
-- Email: `admin@test.com`  
-- Password: `1q2w3E*`
+- Email: `admin`  
+- Password: `1q2w3E*`  
+- Access: Full system permissions (System Admin with all roles and privileges)
 
 ---
 
@@ -89,7 +90,7 @@ src/SponsorshipWorkflow.DbMigrator/appsettings.json
 
 | Email | Role | Password |
 |---|---|---|
-| admin@test.com | System Admin | 1q2w3E* |
+| admin@test.com | System Admin (All Permissions) | 1q2w3E* |
 | finance@test.com | Finance Admin | 1q2w3E* |
 | manager@test.com | Manager | 1q2w3E* |
 | requestor@test.com | Requestor | 1q2w3E* |
