@@ -107,6 +107,16 @@ public class SponsorshipWorkflowHttpApiHostModule : AbpModule
 			options.CheckLibs = false;
 		});
 
+		Configure<ForwardedHeadersOptions>(options =>
+		{
+			options.ForwardedHeaders =
+				ForwardedHeaders.XForwardedFor |
+				ForwardedHeaders.XForwardedProto;
+
+			options.KnownNetworks.Clear();
+			options.KnownProxies.Clear();
+		});
+
 		if (!configuration.GetValue<bool>("App:DisablePII"))
 		{
 			Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
@@ -249,17 +259,11 @@ public class SponsorshipWorkflowHttpApiHostModule : AbpModule
 			options.AddDefaultPolicy(builder =>
 			{
 				builder
-					.WithOrigins(
-						configuration["App:CorsOrigins"]?
-							.Split(",", StringSplitOptions.RemoveEmptyEntries)
-							.Select(o => o.Trim().RemovePostFix("/"))
-							.ToArray() ?? Array.Empty<string>()
-					)
-					.WithAbpExposedHeaders()
-					.SetIsOriginAllowedToAllowWildcardSubdomains()
+					.WithOrigins("https://sponsorship-workflow.vercel.app")
 					.AllowAnyHeader()
 					.AllowAnyMethod()
-					.AllowCredentials();
+					.AllowCredentials()
+					.WithAbpExposedHeaders();
 			});
 		});
 	}
