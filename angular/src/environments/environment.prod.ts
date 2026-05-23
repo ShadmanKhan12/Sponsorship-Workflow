@@ -17,7 +17,9 @@ export const environment: Environment = {
     clientId: 'SponsorshipWorkflow_App',
     responseType: 'code',
     scope: 'openid profile email roles offline_access SponsorshipWorkflow',
+    // API is served over HTTPS on Render; metadata discovery uses https.
     requireHttps: true,
+    strictDiscoveryDocumentValidation: false,
   },
 
   apis: {

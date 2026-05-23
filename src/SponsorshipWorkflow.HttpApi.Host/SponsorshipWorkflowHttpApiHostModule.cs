@@ -102,10 +102,10 @@ public class SponsorshipWorkflowHttpApiHostModule : AbpModule
 		var configuration = context.Services.GetConfiguration();
 		var hostingEnvironment = context.Services.GetHostingEnvironment();
 
-		Configure<AbpMvcLibsOptions>(options =>
-		{
-			options.CheckLibs = false;
-		});
+		//Configure<AbpMvcLibsOptions>(options =>
+		//{
+		//	options.CheckLibs = false;
+		//});
 
 		Configure<ForwardedHeadersOptions>(options =>
 		{
@@ -259,7 +259,11 @@ public class SponsorshipWorkflowHttpApiHostModule : AbpModule
 			options.AddDefaultPolicy(builder =>
 			{
 				builder
-					.WithOrigins("https://sponsorship-workflow.vercel.app")
+					.WithOrigins(
+						configuration["App:CorsOrigins"]?
+							.Split(",", StringSplitOptions.RemoveEmptyEntries)
+							.Select(o => o.Trim().RemovePostFix("/"))
+							.ToArray() ?? Array.Empty<string>())
 					.AllowAnyHeader()
 					.AllowAnyMethod()
 					.AllowCredentials()
