@@ -57,42 +57,70 @@ namespace SponsorshipWorkflow;
     )]
 public class SponsorshipWorkflowHttpApiHostModule : AbpModule
 {
-    public override void PreConfigureServices(ServiceConfigurationContext context)
-    {
-        var hostingEnvironment = context.Services.GetHostingEnvironment();
-        var configuration = context.Services.GetConfiguration();
+	//  public override void PreConfigureServices(ServiceConfigurationContext context)
+	//  {
+	//      var hostingEnvironment = context.Services.GetHostingEnvironment();
+	//      var configuration = context.Services.GetConfiguration();
 
-        PreConfigure<OpenIddictBuilder>(builder =>
-        {
-            builder.AddValidation(options =>
-            {
-                options.AddAudiences("SponsorshipWorkflow");
-                options.UseLocalServer();
-                options.UseAspNetCore();
-            });
-        });
-		if (!hostingEnvironment.IsDevelopment())
-        {
-			//PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
-			//{
-			//    options.AddDevelopmentEncryptionAndSigningCertificate = false;
-			//});
+	//      PreConfigure<OpenIddictBuilder>(builder =>
+	//      {
+	//          builder.AddValidation(options =>
+	//          {
+	//              options.AddAudiences("SponsorshipWorkflow");
+	//              options.UseLocalServer();
+	//              options.UseAspNetCore();
+	//          });
+	//      });
+	//if (!hostingEnvironment.IsDevelopment())
+	//      {
+	//	//PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
+	//	//{
+	//	//    options.AddDevelopmentEncryptionAndSigningCertificate = false;
+	//	//});
 
-			//PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
-			//{
-			//    serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", configuration["AuthServer:CertificatePassPhrase"]!);
-			//    serverBuilder.SetIssuer(new Uri(configuration["AuthServer:Authority"]!));
-			//});
+	//	//PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
+	//	//{
+	//	//    serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", configuration["AuthServer:CertificatePassPhrase"]!);
+	//	//    serverBuilder.SetIssuer(new Uri(configuration["AuthServer:Authority"]!));
+	//	//});
 
-			PreConfigure<OpenIddictServerBuilder>(builder =>
+	//	PreConfigure<OpenIddictServerBuilder>(builder =>
+	//	{
+	//		builder.AddDevelopmentEncryptionCertificate()
+	//			   .AddDevelopmentSigningCertificate();
+	//	});
+	//}
+	//  }
+	public override void PreConfigureServices(ServiceConfigurationContext context)
+	{
+		var hostingEnvironment = context.Services.GetHostingEnvironment();
+		var configuration = context.Services.GetConfiguration();
+
+		PreConfigure<OpenIddictBuilder>(builder =>
+		{
+			builder.AddValidation(options =>
 			{
-				builder.AddDevelopmentEncryptionCertificate()
-					   .AddDevelopmentSigningCertificate();
+				options.AddAudiences("SponsorshipWorkflow");
+				options.UseLocalServer();
+				options.UseAspNetCore();
 			});
-		}
-    }
+		});
 
-    public override void ConfigureServices(ServiceConfigurationContext context)
+		// FIX: ALWAYS use development cert in free hosting (Render)
+		PreConfigure<OpenIddictServerBuilder>(builder =>
+		{
+			builder
+				.AllowAuthorizationCodeFlow()
+				.AllowRefreshTokenFlow()
+				.UseAspNetCore();
+
+			// IMPORTANT: fixes ID2083 HTTPS + login issues
+			builder
+				.AddDevelopmentEncryptionCertificate()
+				.AddDevelopmentSigningCertificate();
+		});
+	}
+	public override void ConfigureServices(ServiceConfigurationContext context)
     {
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
@@ -108,22 +136,25 @@ public class SponsorshipWorkflowHttpApiHostModule : AbpModule
             Microsoft.IdentityModel.Logging.IdentityModelEventSource.LogCompleteSecurityArtifact = true;
         }
 
-        if (!configuration.GetValue<bool>("AuthServer:RequireHttpsMetadata"))
-        {
-            Configure<OpenIddictServerAspNetCoreOptions>(options =>
-            {
-                options.DisableTransportSecurityRequirement = true;
-            });
-            
-            Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
-                options.KnownIPNetworks.Clear();
-                options.KnownProxies.Clear();
-            });
-        }
+		//if (!configuration.GetValue<bool>("AuthServer:RequireHttpsMetadata"))
+		//{
+		//    Configure<OpenIddictServerAspNetCoreOptions>(options =>
+		//    {
+		//        options.DisableTransportSecurityRequirement = true;
+		//    });
 
-        if (hostingEnvironment.IsDevelopment())
+		//    Configure<ForwardedHeadersOptions>(options =>
+		//    {
+		//        options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
+		//        options.KnownIPNetworks.Clear();
+		//        options.KnownProxies.Clear();
+		//    });
+		//}
+		Configure<OpenIddictServerAspNetCoreOptions>(options =>
+		{
+			options.DisableTransportSecurityRequirement = true;
+		});
+		if (hostingEnvironment.IsDevelopment())
         {
             context.Services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
@@ -243,19 +274,22 @@ public class SponsorshipWorkflowHttpApiHostModule : AbpModule
         {
             options.AddDefaultPolicy(builder =>
             {
-                builder
-                    .WithOrigins(
-                        configuration["App:CorsOrigins"]?
-                            .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                            .Select(o => o.Trim().RemovePostFix("/"))
-                            .ToArray() ?? Array.Empty<string>()
-                    )
-                    .WithAbpExposedHeaders()
-                    .SetIsOriginAllowedToAllowWildcardSubdomains()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });
+				builder
+		  .WithOrigins(
+			  configuration["App:CorsOrigins"]?
+				  .Split(",", StringSplitOptions.RemoveEmptyEntries)
+				  .Select(o => o.Trim().RemovePostFix("/"))
+				  .ToArray()
+			  ?? new string[]
+			  {
+						"https://sponsorship-workflow.vercel.app"
+			  }
+		  )
+		  .AllowAnyHeader()
+		  .AllowAnyMethod()
+		  .AllowCredentials()
+		  .WithAbpExposedHeaders();
+			});
         });
     }
 
