@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { PermissionService } from '@abp/ng.core';
 import { SponsorshipService } from '../../services/sponsorship.service';
 import { SponsorshipStatus } from '../../enums/status.enum';
+import { SponsorshipPermissions } from '../../constants/permissions';
 
 @Component({
   selector: 'app-request-details',
@@ -15,27 +17,63 @@ export class RequestDetailsPageComponent implements OnInit {
   timeline: any[] = [];
   approvalDialogVisible = false;
 
-  constructor(private route: ActivatedRoute, private svc: SponsorshipService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private svc: SponsorshipService,
+    private permission: PermissionService
+  ) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id) this.load();
   }
 
+  readonly status = SponsorshipStatus;
+
   load() {
     if (!this.id) return;
-    this.svc.getById(this.id).subscribe((r) => {
-      this.item = r;
-      // timeline should be fetched from proxy; using placeholder
-      this.timeline = (r as any)?.workflowHistory || [];
+    this.svc.getById(this.id).subscribe((r) => (this.item = r));
+    this.svc.getWorkflowHistory(this.id).subscribe((h) => {
+      this.timeline = (h || []).map((x: any) => ({
+        timestamp: x.performedAt,
+        action: x.action,
+        user: x.performedByUserName || 'System',
+        previousStatus: x.previousStatus,
+        newStatus: x.newStatus,
+        remarks: x.remarks,
+      }));
     });
   }
 
-  showApproval() { this.approvalDialogVisible = true; }
+  /** Matches workflow: manager step then finance step (backend unchanged). */
+  get canApprove(): boolean {
+    if (!this.item) return false;
+    if (this.item.status === SponsorshipStatus.PendingManagerApproval) {
+      return this.permission.getGrantedPolicy(SponsorshipPermissions.requests.managerApprove);
+    }
+    if (this.item.status === SponsorshipStatus.PendingFinanceReview) {
+      return this.permission.getGrantedPolicy(SponsorshipPermissions.requests.financeApprove);
+    }
+    return false;
+  }
 
-  onApproval($event: any) {
+  showApproval() {
+    this.approvalDialogVisible = true;
+  }
+
+  onApproval($event: { approved: boolean; remarks?: string }) {
+    if (!this.id || !this.item) return;
+    let action;
+    if (this.item.status === SponsorshipStatus.PendingManagerApproval) {
+      action = $event.approved
+        ? this.svc.approveByManager(this.id, $event.remarks)
+        : this.svc.rejectByManager(this.id, $event.remarks);
+    } else {
+      action = $event.approved
+        ? this.svc.approveByFinance(this.id, $event.remarks)
+        : this.svc.rejectByFinance(this.id, $event.remarks);
+    }
     this.approvalDialogVisible = false;
-    // call appropriate approve/reject proxy based on role; placeholder
-    this.load();
+    action.subscribe(() => this.load());
   }
 }

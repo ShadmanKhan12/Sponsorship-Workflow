@@ -22,7 +22,7 @@ export class ManagerApprovalsPageComponent implements OnInit {
 
   load() {
     this.loading = true;
-    this.svc.queryByStatus(SponsorshipStatus.PendingManagerApproval, { page: 1, size: 20 }).subscribe((r: any) => {
+    this.svc.queryByStatus(SponsorshipStatus.PendingManagerApproval).subscribe((r) => {
       this.items = r.items || [];
       this.loading = false;
     });
@@ -33,9 +33,12 @@ export class ManagerApprovalsPageComponent implements OnInit {
     this.approvalDialogVisible = true;
   }
 
-  onApprove($event: any) {
+  onApprove($event: { approved: boolean; remarks?: string }) {
+    if (!this.activeItem?.id) return;
+    const action = $event.approved
+      ? this.svc.approveByManager(this.activeItem.id, $event.remarks)
+      : this.svc.rejectByManager(this.activeItem.id, $event.remarks);
     this.approvalDialogVisible = false;
-    // call proxy approve/reject based on $event.approved
-    this.load();
+    action.subscribe(() => this.load());
   }
 }

@@ -10,14 +10,23 @@
     <app-status-badge [status]="item.status"></app-status-badge>
   </div>
 
+  <section class="section" *ngIf="item.purpose || item.eventName || item.expectedBusinessBenefit || item.remarks">
+    <h3>Request details</h3>
+    <p *ngIf="item.eventName"><strong>Event / organisation:</strong> {{ item.eventName }}</p>
+    <p *ngIf="item.eventDate"><strong>Event date:</strong> {{ item.eventDate | date:'mediumDate' }}</p>
+    <p *ngIf="item.purpose"><strong>Purpose:</strong> {{ item.purpose }}</p>
+    <p *ngIf="item.expectedBusinessBenefit"><strong>Expected benefit:</strong> {{ item.expectedBusinessBenefit }}</p>
+    <p *ngIf="item.remarks"><strong>Remarks:</strong> {{ item.remarks }}</p>
+  </section>
+
   <section class="section">
-    <h3>Workflow History</h3>
+    <h3>Workflow history</h3>
     <app-workflow-timeline [items]="timeline"></app-workflow-timeline>
+    <p *ngIf="timeline.length === 0">No history yet.</p>
   </section>
 
   <section class="section actions">
-    <button *ngIf="item.status === 'Draft'" (click)="showApproval()">Submit</button>
-    <button *ngIf="item.status === 'PendingManagerApproval'" (click)="showApproval()">Manager Actions</button>
+    <button *ngIf="canApprove" (click)="showApproval()">Approve / Reject</button>
   </section>
 
   <app-approval-dialog [visible]="approvalDialogVisible" (confirm)="onApproval($event)" (close)="approvalDialogVisible=false"></app-approval-dialog>

@@ -14,6 +14,7 @@ namespace SponsorshipWorkflow;
 [DependsOn(
     typeof(SponsorshipWorkflowDomainModule),
     typeof(SponsorshipWorkflowApplicationContractsModule),
+    typeof(AbpMapperlyModule),
     typeof(AbpPermissionManagementApplicationModule),
     typeof(AbpFeatureManagementApplicationModule),
     typeof(AbpIdentityApplicationModule),

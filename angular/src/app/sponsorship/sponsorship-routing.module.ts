@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from '@abp/ng.core';
+import { SponsorshipPermissions } from './constants/permissions';
 
 import { DashboardPageComponent } from './pages/dashboard/dashboard.component';
 import { MyRequestsPageComponent } from './pages/my-requests/my-requests.component';
@@ -15,15 +16,60 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: '', component: DashboardPageComponent },
-      { path: 'dashboard', component: DashboardPageComponent },
-      { path: 'my-requests', component: MyRequestsPageComponent, canActivate: [PermissionGuard], data: { requiredPolicy: 'SponsorshipWorkflow.SponsorshipRequests.Create' } },
-      { path: 'create', component: CreateRequestPageComponent, canActivate: [PermissionGuard], data: { requiredPolicy: 'SponsorshipWorkflow.SponsorshipRequests.Create' } },
-      { path: 'details/:id', component: RequestDetailsPageComponent },
-      { path: 'manager-approvals', component: ManagerApprovalsPageComponent, canActivate: [PermissionGuard], data: { requiredPolicy: 'SponsorshipWorkflow.SponsorshipRequests.ManagerApprove' } },
-      { path: 'finance-reviews', component: FinanceReviewsPageComponent, canActivate: [PermissionGuard], data: { requiredPolicy: 'SponsorshipWorkflow.SponsorshipRequests.FinanceApprove' } },
-      { path: 'admin', component: AdminDashboardPageComponent, canActivate: [PermissionGuard], data: { requiredPolicy: 'SponsorshipWorkflow.SponsorshipRequests.ViewAll' } },
-      { path: 'types', component: SponsorshipTypesPageComponent, canActivate: [PermissionGuard], data: { requiredPolicy: 'SponsorshipWorkflow.SponsorshipTypes.Manage' } },
+      {
+        path: '',
+        component: DashboardPageComponent,
+        canActivate: [PermissionGuard],
+        data: { requiredPolicy: SponsorshipPermissions.requests.default },
+      },
+      {
+        path: 'dashboard',
+        component: DashboardPageComponent,
+        canActivate: [PermissionGuard],
+        data: { requiredPolicy: SponsorshipPermissions.requests.default },
+      },
+      {
+        path: 'my-requests',
+        component: MyRequestsPageComponent,
+        canActivate: [PermissionGuard],
+        data: { requiredPolicy: SponsorshipPermissions.requests.create },
+      },
+      {
+        path: 'create',
+        component: CreateRequestPageComponent,
+        canActivate: [PermissionGuard],
+        data: { requiredPolicy: SponsorshipPermissions.requests.create },
+      },
+      {
+        path: 'details/:id',
+        component: RequestDetailsPageComponent,
+        canActivate: [PermissionGuard],
+        data: { requiredPolicy: SponsorshipPermissions.requests.default },
+      },
+      {
+        path: 'manager-approvals',
+        component: ManagerApprovalsPageComponent,
+        canActivate: [PermissionGuard],
+        data: { requiredPolicy: SponsorshipPermissions.requests.managerApprove },
+      },
+      {
+        path: 'finance-reviews',
+        component: FinanceReviewsPageComponent,
+        canActivate: [PermissionGuard],
+        data: { requiredPolicy: SponsorshipPermissions.requests.financeApprove },
+      },
+      {
+        path: 'admin',
+        component: AdminDashboardPageComponent,
+        canActivate: [PermissionGuard],
+        data: { requiredPolicy: SponsorshipPermissions.requests.viewAll },
+      },
+      {
+        path: 'types',
+        component: SponsorshipTypesPageComponent,
+        canActivate: [PermissionGuard],
+        data: { requiredPolicy: SponsorshipPermissions.types.manage },
+      },
     ],
   },
 ];

@@ -1,8 +1,27 @@
 <div class="dashboard">
-  <div class="cards">
-    <div class="card">Total Requests<br/><span>{{ summary.total }}</span></div>
-    <div class="card">Pending Approvals<br/><span>{{ summary.pending }}</span></div>
-    <div class="card">Approved<br/><span>{{ summary.approved }}</span></div>
-    <div class="card">Rejected<br/><span>{{ summary.rejected }}</span></div>
+  <p *ngIf="loading">Loading…</p>
+
+  <div class="cards" *ngIf="!loading && mode === 'admin'">
+    <div class="card">All requests<br /><span>{{ summary.total }}</span></div>
+    <div class="card">Pending manager<br /><span>{{ summary.pendingManager }}</span></div>
+    <div class="card">Pending finance<br /><span>{{ summary.pendingFinance }}</span></div>
+    <div class="card">Approved<br /><span>{{ summary.approved }}</span></div>
+    <div class="card">Rejected<br /><span>{{ summary.rejected }}</span></div>
+  </div>
+
+  <div class="cards" *ngIf="!loading && mode === 'requestor'">
+    <div class="card">My requests<br /><span>{{ summary.total }}</span></div>
+    <div class="card">Drafts<br /><span>{{ summary.draft }}</span></div>
+    <div class="card">In approval workflow<br /><span>{{ summary.pendingManager + summary.pendingFinance }}</span></div>
+    <div class="card">Approved<br /><span>{{ summary.approved }}</span></div>
+    <div class="card">Rejected<br /><span>{{ summary.rejected }}</span></div>
+  </div>
+
+  <div class="cards" *ngIf="!loading && mode === 'manager'">
+    <div class="card">Pending manager approval<br /><span>{{ summary.pendingManager }}</span></div>
+  </div>
+
+  <div class="cards" *ngIf="!loading && mode === 'finance'">
+    <div class="card">Pending finance review<br /><span>{{ summary.pendingFinance }}</span></div>
   </div>
 </div>

@@ -37,6 +37,14 @@ export class SponsorshipRequestService {
     { apiName: this.apiName,...config });
   
 
+  get = (id: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, SponsorshipRequestDto>({
+      method: 'GET',
+      url: `/api/app/sponsorship-request/${id}`,
+    },
+    { apiName: this.apiName,...config });
+  
+
   create = (input: CreateUpdateSponsorshipRequestDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, SponsorshipRequestDto>({
       method: 'POST',

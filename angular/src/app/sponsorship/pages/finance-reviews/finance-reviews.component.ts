@@ -22,7 +22,7 @@ export class FinanceReviewsPageComponent implements OnInit {
 
   load() {
     this.loading = true;
-    this.svc.queryByStatus(SponsorshipStatus.PendingFinanceReview, { page: 1, size: 20 }).subscribe((r: any) => {
+    this.svc.queryByStatus(SponsorshipStatus.PendingFinanceReview).subscribe((r) => {
       this.items = r.items || [];
       this.loading = false;
     });
@@ -33,8 +33,12 @@ export class FinanceReviewsPageComponent implements OnInit {
     this.dialogVisible = true;
   }
 
-  onReviewed($event: any) {
+  onReviewed($event: { approved: boolean; remarks?: string }) {
+    if (!this.activeItem?.id) return;
+    const action = $event.approved
+      ? this.svc.approveByFinance(this.activeItem.id, $event.remarks)
+      : this.svc.rejectByFinance(this.activeItem.id, $event.remarks);
     this.dialogVisible = false;
-    this.load();
+    action.subscribe(() => this.load());
   }
 }

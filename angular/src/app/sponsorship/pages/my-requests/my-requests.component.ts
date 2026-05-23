@@ -11,6 +11,7 @@ import { SponsorshipStatus } from '../../enums/status.enum';
 export class MyRequestsPageComponent implements OnInit {
   items: any[] = [];
   loading = false;
+  readonly draftStatus = SponsorshipStatus.Draft;
 
   constructor(private svc: SponsorshipService) {}
 
@@ -20,7 +21,7 @@ export class MyRequestsPageComponent implements OnInit {
 
   load() {
     this.loading = true;
-    this.svc.getMyRequests({ page: 1, size: 20 }).subscribe((r: any) => {
+    this.svc.getMyRequests().subscribe((r) => {
       this.items = r.items || [];
       this.loading = false;
     });

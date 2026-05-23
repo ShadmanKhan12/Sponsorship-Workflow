@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Riok.Mapperly.Abstractions;
 using Volo.Abp.Mapperly;
 using SponsorshipWorkflow.Dtos;
@@ -9,18 +10,44 @@ namespace SponsorshipWorkflow;
 [Mapper]
 public static partial class SponsorshipWorkflowApplicationMappers
 {
-	// SponsorshipRequest mappings
 	public static partial SponsorshipRequestDto Map(SponsorshipRequest source);
 	public static partial SponsorshipRequestListDto MapToListDto(SponsorshipRequest source);
 	public static partial SponsorshipRequest Map(CreateUpdateSponsorshipRequestDto source);
-	public static partial List<SponsorshipRequestListDto> Map(List<SponsorshipRequest> sources);
+	public static partial void Map(CreateUpdateSponsorshipRequestDto source, SponsorshipRequest destination);
 
-	// SponsorshipType mappings
+	public static List<SponsorshipRequestListDto> MapToListDtos(IReadOnlyList<SponsorshipRequest>? sources)
+	{
+		if (sources == null || sources.Count == 0)
+		{
+			return new List<SponsorshipRequestListDto>();
+		}
+
+		return sources.Select(MapToListDto).ToList();
+	}
+
 	public static partial SponsorshipTypeDto Map(SponsorshipType source);
 	public static partial SponsorshipType Map(CreateUpdateSponsorshipTypeDto source);
-	public static partial List<SponsorshipTypeDto> Map(List<SponsorshipType> sources);
+	public static partial void Map(CreateUpdateSponsorshipTypeDto source, SponsorshipType destination);
 
-	// WorkflowHistory mappings
+	public static List<SponsorshipTypeDto> MapToTypeDtos(IReadOnlyList<SponsorshipType>? sources)
+	{
+		if (sources == null || sources.Count == 0)
+		{
+			return new List<SponsorshipTypeDto>();
+		}
+
+		return sources.Select(Map).ToList();
+	}
+
 	public static partial WorkflowHistoryDto Map(WorkflowHistory source);
-	public static partial List<WorkflowHistoryDto> MapHistoryList(List<WorkflowHistory> sources);
+
+	public static List<WorkflowHistoryDto> MapToWorkflowHistoryDtos(IEnumerable<WorkflowHistory>? sources)
+	{
+		if (sources == null)
+		{
+			return new List<WorkflowHistoryDto>();
+		}
+
+		return sources.OrderBy(x => x.PerformedAt).Select(Map).ToList();
+	}
 }

@@ -23,7 +23,7 @@
         <td>{{ it.createdAt | date:'short' }}</td>
         <td>
           <a [routerLink]="['/sponsorship/details', it.id]">View</a>
-          <a *ngIf="it.status === 'Draft'" [routerLink]="['/sponsorship/create']" [queryParams]="{ id: it.id }">Edit</a>
+          <a *ngIf="it.status === draftStatus" [routerLink]="['/sponsorship/create']" [queryParams]="{ id: it.id }">Edit</a>
           <a *ngIf="canCancel(it.status)" (click)="onCancel(it.id)">Cancel</a>
         </td>
       </tr>

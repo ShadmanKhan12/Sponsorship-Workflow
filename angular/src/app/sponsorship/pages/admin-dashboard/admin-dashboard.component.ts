@@ -19,6 +19,6 @@ export class AdminDashboardPageComponent implements OnInit {
 
   load() {
     // Would pass filters into proxy; placeholder implementation
-    this.svc.getMyRequests({ page: 1, size: 50 }).subscribe((r: any) => (this.items = r.items || []));
+    this.svc.getAllRequests(0, 50).subscribe((r) => (this.items = r.items || []));
   }
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SponsorshipRequest } from '../../models/request.model';
 
@@ -8,7 +8,7 @@ import { SponsorshipRequest } from '../../models/request.model';
   templateUrl: './request-form.component.html',
   styleUrls: ['./request-form.component.scss'],
 })
-export class RequestFormComponent implements OnInit {
+export class RequestFormComponent implements OnInit, OnChanges {
   @Input() request?: SponsorshipRequest | null;
   @Input() sponsorshipTypes: any[] = [];
   @Output() save = new EventEmitter<{ dto: any; submit?: boolean }>();
@@ -18,17 +18,44 @@ export class RequestFormComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
+    this.buildForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['request'] && this.form) {
+      this.patchForm(this.request);
+    }
+  }
+
+  private buildForm(): void {
     this.form = this.fb.group({
-      title: [this.request?.title || '', [Validators.required, Validators.maxLength(200)]],
-      requestorName: [this.request?.requestorName || '', [Validators.required]],
-      department: [this.request?.department || ''],
-      sponsorshipTypeId: [this.request?.sponsorshipTypeId || '', [Validators.required]],
-      eventName: [this.request?.eventName || ''],
-      eventDate: [this.request?.eventDate || ''],
-      requestedAmount: [this.request?.requestedAmount || 0, [Validators.min(0)]],
-      purpose: [this.request?.purpose || '', [Validators.maxLength(1000)]],
-      expectedBusinessBenefit: [this.request?.expectedBusinessBenefit || ''],
-      remarks: [this.request?.remarks || ''],
+      title: ['', [Validators.required, Validators.maxLength(200)]],
+      requestorName: ['', [Validators.required, Validators.maxLength(100)]],
+      department: ['', [Validators.required, Validators.maxLength(100)]],
+      sponsorshipTypeId: [null as string | null, [Validators.required]],
+      eventName: ['', [Validators.maxLength(200)]],
+      eventDate: [''],
+      requestedAmount: [0, [Validators.required, Validators.min(0)]],
+      purpose: ['', [Validators.maxLength(1000)]],
+      expectedBusinessBenefit: ['', [Validators.maxLength(1000)]],
+      remarks: ['', [Validators.maxLength(1000)]],
+    });
+    this.patchForm(this.request);
+  }
+
+  private patchForm(request?: SponsorshipRequest | null): void {
+    if (!request) return;
+    this.form.patchValue({
+      title: request.title || '',
+      requestorName: request.requestorName || '',
+      department: request.department || '',
+      sponsorshipTypeId: request.sponsorshipTypeId || null,
+      eventName: request.eventName || '',
+      eventDate: request.eventDate ? String(request.eventDate).substring(0, 10) : '',
+      requestedAmount: request.requestedAmount ?? 0,
+      purpose: request.purpose || '',
+      expectedBusinessBenefit: request.expectedBusinessBenefit || '',
+      remarks: request.remarks || '',
     });
   }
 

@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { PermissionService } from '@abp/ng.core';
 import { SponsorshipService } from '../../services/sponsorship.service';
 import { SponsorshipStatus } from '../../enums/status.enum';
+import { SponsorshipRequest } from '../../models/request.model';
+import { SponsorshipPermissions } from '../../constants/permissions';
+
+type DashboardMode = 'admin' | 'requestor' | 'manager' | 'finance';
 
 @Component({
   selector: 'app-sponsorship-dashboard',
@@ -9,19 +14,85 @@ import { SponsorshipStatus } from '../../enums/status.enum';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardPageComponent implements OnInit {
-  summary: any = { total: 0, pending: 0, approved: 0, rejected: 0 };
+  mode: DashboardMode = 'requestor';
+  loading = true;
 
-  constructor(private svc: SponsorshipService) {}
+  summary = {
+    total: 0,
+    draft: 0,
+    pendingManager: 0,
+    pendingFinance: 0,
+    approved: 0,
+    rejected: 0,
+  };
+
+  constructor(
+    private svc: SponsorshipService,
+    private permission: PermissionService
+  ) {}
 
   ngOnInit(): void {
-    this.loadSummary();
+    if (this.permission.getGrantedPolicy(SponsorshipPermissions.requests.viewAll)) {
+      this.mode = 'admin';
+      this.loadAdminSummary();
+    } else if (this.permission.getGrantedPolicy(SponsorshipPermissions.requests.managerApprove)) {
+      this.mode = 'manager';
+      this.loadManagerSummary();
+    } else if (this.permission.getGrantedPolicy(SponsorshipPermissions.requests.financeApprove)) {
+      this.mode = 'finance';
+      this.loadFinanceSummary();
+    } else {
+      this.mode = 'requestor';
+      this.loadRequestorSummary();
+    }
   }
 
-  loadSummary() {
-    // Using proxy endpoints for counts would be ideal; here we fetch lists for counts as a placeholder
-    this.svc.queryByStatus(SponsorshipStatus.Draft).subscribe((r: any) => (this.summary.total += r.totalCount || 0));
-    this.svc.queryByStatus(SponsorshipStatus.PendingManagerApproval).subscribe((r: any) => (this.summary.pending = r.totalCount || 0));
-    this.svc.queryByStatus(SponsorshipStatus.Approved).subscribe((r: any) => (this.summary.approved = r.totalCount || 0));
-    this.svc.queryByStatus(SponsorshipStatus.Rejected).subscribe((r: any) => (this.summary.rejected = r.totalCount || 0));
+  private loadAdminSummary(): void {
+    this.svc.getAllRequests(0, 500).subscribe({
+      next: (res) => {
+        this.applyCounts(res.items);
+        this.loading = false;
+      },
+      error: () => (this.loading = false),
+    });
+  }
+
+  private loadRequestorSummary(): void {
+    this.svc.getMyRequests().subscribe({
+      next: (res) => {
+        this.applyCounts(res.items);
+        this.loading = false;
+      },
+      error: () => (this.loading = false),
+    });
+  }
+
+  private loadManagerSummary(): void {
+    this.svc.queryByStatus(SponsorshipStatus.PendingManagerApproval).subscribe({
+      next: (res) => {
+        this.summary.pendingManager = res.totalCount;
+        this.loading = false;
+      },
+      error: () => (this.loading = false),
+    });
+  }
+
+  private loadFinanceSummary(): void {
+    this.svc.queryByStatus(SponsorshipStatus.PendingFinanceReview).subscribe({
+      next: (res) => {
+        this.summary.pendingFinance = res.totalCount;
+        this.loading = false;
+      },
+      error: () => (this.loading = false),
+    });
+  }
+
+  private applyCounts(items: SponsorshipRequest[]): void {
+    this.summary.total = items.length;
+    this.summary.draft = items.filter((i) => i.status === SponsorshipStatus.Draft).length;
+    this.summary.pendingManager = items.filter((i) => i.status === SponsorshipStatus.PendingManagerApproval).length;
+    this.summary.pendingFinance = items.filter((i) => i.status === SponsorshipStatus.PendingFinanceReview).length;
+    this.summary.approved = items.filter((i) => i.status === SponsorshipStatus.Approved).length;
+    this.summary.rejected = items.filter((i) => i.status === SponsorshipStatus.Rejected).length;
   }
 }

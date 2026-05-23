@@ -1,12 +1,12 @@
 <form [formGroup]="form" class="request-form">
   <div class="row">
-    <label>Title</label>
+    <label>Request Title</label>
     <input formControlName="title" />
   </div>
 
   <div class="row two-cols">
     <div>
-      <label>Requestor</label>
+      <label>Requestor Name</label>
       <input formControlName="requestorName" />
     </div>
     <div>
@@ -19,8 +19,8 @@
     <div>
       <label>Sponsorship Type</label>
       <select formControlName="sponsorshipTypeId">
-        <option value="">Select</option>
-        <option *ngFor="let t of sponsorshipTypes" [value]="t.id">{{ t.name }}</option>
+        <option [ngValue]="null">Select sponsorship type</option>
+        <option *ngFor="let t of sponsorshipTypes" [ngValue]="t.id">{{ t.name }}</option>
       </select>
     </div>
     <div>
@@ -30,7 +30,7 @@
   </div>
 
   <div class="row">
-    <label>Event Name</label>
+    <label>Event / Organisation Name</label>
     <input formControlName="eventName" />
   </div>
 
@@ -40,7 +40,7 @@
       <input type="date" formControlName="eventDate" />
     </div>
     <div>
-      <label>Purpose</label>
+      <label>Purpose / Justification</label>
       <textarea formControlName="purpose"></textarea>
     </div>
   </div>
