@@ -3,9 +3,9 @@ WORKDIR /src
 
 COPY . .
 
-RUN dotnet restore SponsorshipWorkflow.HttpApi.Host.csproj
+RUN dotnet restore src/SponsorshipWorkflow.HttpApi.Host/SponsorshipWorkflow.HttpApi.Host.csproj
 
-RUN dotnet publish SponsorshipWorkflow.HttpApi.Host.csproj -c Release -o /app/publish
+RUN dotnet publish src/SponsorshipWorkflow.HttpApi.Host/SponsorshipWorkflow.HttpApi.Host.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
