@@ -75,13 +75,23 @@ public class SponsorshipWorkflowHttpApiHostModule : AbpModule
 		{
 			PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
 			{
-				options.AddDevelopmentEncryptionAndSigningCertificate = false;
+				options.AddDevelopmentEncryptionAndSigningCertificate = true;
 			});
 
 			PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
 			{
-				serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", configuration["AuthServer:CertificatePassPhrase"]!);
-				serverBuilder.SetIssuer(new Uri(configuration["AuthServer:Authority"]!));
+				serverBuilder
+					.AllowAuthorizationCodeFlow()
+					.AllowRefreshTokenFlow()
+					.UseAspNetCore()
+					.DisableTransportSecurityRequirement();
+
+				// ✅ SAFE FOR RENDER + VERCEL DEMO
+				serverBuilder
+					.AddDevelopmentEncryptionCertificate()
+					.AddDevelopmentSigningCertificate();
+
+				// IMPORTANT: do NOT set SetIssuer manually for Render
 			});
 		}
 	}
