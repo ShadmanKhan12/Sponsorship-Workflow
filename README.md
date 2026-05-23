@@ -1,80 +1,156 @@
-# SponsorshipWorkflow
+# Sponsorship Workflow
 
-## About this solution
+> ⚠️ Backend is hosted on Render Free Tier.  
+> Due to free hosting limitations, the backend instance may spin down during inactivity and the first request can take 30–50 seconds to respond. The app may also occasionally become temporarily unavailable due to free-tier constraints.
 
-This is a layered startup solution based on [Domain Driven Design (DDD)](https://abp.io/docs/latest/framework/architecture/domain-driven-design) practises. All the fundamental ABP modules are already installed. Check the [Application Startup Template](https://abp.io/docs/latest/solution-templates/layered-web-application) documentation for more info.
+A sponsorship request approval workflow system built with modern enterprise technologies using ABP Framework and .NET 10.
 
-### Pre-requirements
+---
 
-* [.NET10.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
-* [Node v18 or 20](https://nodejs.org/en)
+# Live URLs
 
-### Configurations
+🌐 **Frontend**  
+https://sponsorship-workflow.vercel.app/
 
-The solution comes with a default configuration that works out of the box. However, you may consider to change the following configuration before running your solution:
+⚙️ **Backend API**  
+https://sponsorship-workflow-l8d2.onrender.com/
 
-* Check the `ConnectionStrings` in `appsettings.json` files under the `SponsorshipWorkflow.HttpApi.Host` and `SponsorshipWorkflow.DbMigrator` projects and change it if you need.
+📘 **Swagger Documentation**  
+https://sponsorship-workflow-l8d2.onrender.com/swagger/index.html
 
-### Before running the application
+---
 
-* Run `abp install-libs` command on your solution folder to install client-side package dependencies. This step is automatically done when you create a new solution, if you didn't especially disabled it. However, you should run it yourself if you have first cloned this solution from your source control, or added a new client-side package dependency to your solution.
-* Run `SponsorshipWorkflow.DbMigrator` to create the initial database. This step is also automatically done when you create a new solution, if you didn't especially disabled it. This should be done in the first run. It is also needed if a new database migration is added to the solution later.
+# Tech Stack
 
-#### Generating a Signing Certificate
+## Backend
+- 🔷 ASP.NET Core .NET 10
+- 🧩 ABP Framework 10.4
+- 🗄️ Entity Framework Core
+- 🔐 OpenIddict Authentication
+- 🐘 PostgreSQL (Neon Serverless)
+- 📄 Serilog Logging
 
-In the production environment, you need to use a production signing certificate. ABP Framework sets up signing and encryption certificates in your application and expects an `openiddict.pfx` file in your application.
+## Frontend
+- 🅰️ Angular 21
+- 🎨 ABP Angular UI
+- 🔄 RxJS
 
-To generate a signing certificate, you can use the following command:
+## DevOps / Hosting
+- 🐳 Dockerized Backend
+- 🚀 Render Deployment (Free Tier)
+- ▲ Vercel Frontend Hosting
+- ☁️ Neon Serverless PostgreSQL
+
+---
+
+# Setup Guide
+
+## Run Backend
 
 ```bash
-dotnet dev-certs https -v -ep openiddict.pfx -p d8b89de2-84ab-44f2-aa1d-7aaecd32c4bf
+cd src/SponsorshipWorkflow.HttpApi.Host
+dotnet run
 ```
 
-> `d8b89de2-84ab-44f2-aa1d-7aaecd32c4bf` is the password of the certificate, you can change it to any password you want.
+## Run Frontend
 
-It is recommended to use **two** RSA certificates, distinct from the certificate(s) used for HTTPS: one for encryption, one for signing.
+```bash
+cd angular
+npm install
+npm start
+```
 
-For more information, please refer to: [OpenIddict Certificate Configuration](https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html#registering-a-certificate-recommended-for-production-ready-scenarios)
+## Run Database Migrator
 
-> Also, see the [Configuring OpenIddict](https://abp.io/docs/latest/Deployment/Configuring-OpenIddict#production-environment) documentation for more information.
+```bash
+cd src/SponsorshipWorkflow.DbMigrator
+dotnet run
+```
 
-### Solution structure
+Update PostgreSQL connection strings in:
 
-This is a layered monolith application that consists of the following applications:
+```text
+src/SponsorshipWorkflow.HttpApi.Host/appsettings.json
+src/SponsorshipWorkflow.DbMigrator/appsettings.json
+```
 
-* `angular`: Angular application.
-* `SponsorshipWorkflow.DbMigrator`: A console application which applies the migrations and also seeds the initial data. It is useful on development as well as on production environment.
-* `SponsorshipWorkflow.HttpApi.Host`: ASP.NET Core API application that is used to expose the APIs to the clients.
+---
 
-#### Test Projects
+# Test Accounts
 
-The `test` folder contains the following test projects:
+## Admin Login
 
-* `SponsorshipWorkflow.Application.Tests`: Application layer tests.
-* `SponsorshipWorkflow.Domain.Tests`: Domain layer tests.
-* `SponsorshipWorkflow.EntityFrameworkCore.Tests`: Entity Framework Core integration tests.
+- Email: `admin@test.com`  
+- Password: `1q2w3E*`
 
+---
 
+## All Test Users
 
+| Email | Role | Password |
+|---|---|---|
+| admin@test.com | System Admin | 1q2w3E* |
+| finance@test.com | Finance Admin | 1q2w3E* |
+| manager@test.com | Manager | 1q2w3E* |
+| requestor@test.com | Requestor | 1q2w3E* |
 
-## Deploying the application
+---
 
-Deploying an ABP application follows the same process as deploying any .NET or ASP.NET Core application. However, there are important considerations to keep in mind. For detailed guidance, refer to ABP's [deployment documentation](https://abp.io/docs/latest/Deployment/Index).
+# Workflow
 
-### Additional resources
+```text
+Draft
+ → Pending Manager Approval
+ → Pending Finance Review
+ → Approved
+```
 
+Also supported:
+- Rejected
+- Cancelled
 
-#### Internal Resources
+---
 
-You can find detailed setup and configuration guide(s) for your solution below:
+# Key Features
 
-* [Angular](./angular/README.md)
+- Role-Based Access Control (RBAC)
+- Sponsorship Request Form
+- Draft / Submit workflow handling
+- Manager approval stage
+- Finance approval stage
+- Workflow status tracking
+- Audit/history logging
+- Permission-based route guards
+- Swagger API documentation
+- Role-based dashboards per user type
 
-#### External Resources
-You can see the following resources to learn more about your solution and the ABP Framework:
+---
 
-* [Web Application Development Tutorial](https://abp.io/docs/latest/tutorials/book-store/part-1)
-* [Application Startup Template](https://abp.io/docs/latest/startup-templates/application/index)
-# Sponsorship-Workflow
-# Sponsorship-Workflow
-# Sponsorship-Workflow
+# Architecture
+
+## Backend
+- Domain Driven Design (DDD) with ABP Framework
+- Domain / Application / EF Core / API layers
+- OpenIddict-based authentication & authorization
+
+## Frontend
+- Angular modular architecture
+- ABP Angular UI integration
+- Route guards + permission-based UI rendering
+
+## Workflow Logic
+- Centralized in application services
+- Strict state transition validation
+- Role + permission checks at every approval stage
+
+---
+
+# TODO / Known Limitations
+
+- ⚠️ App reliability depends on Render free-tier hosting (may sleep or temporarily fail under inactivity)
+- 🔐 Improve identity & authentication robustness (token/session handling hardening)
+- 🛡️ Strengthen role-based access control validation consistency across edge cases
+- 🔑 Improve permission seeding & role initialization stability during first deployment
+- ⚙️ Improve deployment resilience (cold start handling / retry strategy)
+- 🧾 Improve audit consistency for failed/aborted workflow actions
+- 📦 Optimize backend startup performance on cold starts
