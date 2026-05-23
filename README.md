@@ -3,7 +3,15 @@
 > ⚠️ Backend is hosted on Render Free Tier.  
 > Due to free hosting limitations, the backend instance may spin down during inactivity and the first request can take 30–50 seconds to respond. The app may also occasionally become temporarily unavailable due to free-tier constraints.
 
-A sponsorship request approval workflow system built with modern enterprise technologies using ABP Framework and .NET 10.
+---
+
+# About This Project
+
+This project demonstrates my ability to design and implement a full-stack enterprise workflow system using ABP Framework, with a strong focus on clean architecture, RBAC, and approval-based business logic.
+
+It was developed using an AI-assisted engineering workflow (using free-tier AI tools for design support, debugging, and implementation acceleration), while all architectural decisions, system design, RBAC implementation, ABP integration, OpenIddict authentication, Angular frontend structure, CI/CD flow, and deployment strategy were planned and implemented by me.
+
+The project also reflects practical DevOps experience using Dockerized backend deployment, Vercel frontend CI/CD, and Render hosting with Neon Serverless PostgreSQL.
 
 ---
 
@@ -26,24 +34,43 @@ https://sponsorship-workflow-l8d2.onrender.com/swagger/index.html
 - 🔷 ASP.NET Core .NET 10
 - 🧩 ABP Framework 10.4
 - 🗄️ Entity Framework Core
-- 🔐 OpenIddict Authentication
+- 🔐 OpenIddict Authentication & Authorization
 - 🐘 PostgreSQL (Neon Serverless)
 - 📄 Serilog Logging
+- 🐳 Dockerized deployment
 
 ## Frontend
 - 🅰️ Angular 21
 - 🎨 ABP Angular UI
 - 🔄 RxJS
+- 🚀 Vercel CI/CD deployment
 
-## DevOps / Hosting
-- 🐳 Dockerized Backend
-- 🚀 Render Deployment (Free Tier)
-- ▲ Vercel Frontend Hosting
+## DevOps / Infrastructure
+- 🐳 Docker (Backend containerization)
+- 🚀 Render (Backend hosting – free tier)
+- ▲ Vercel (Frontend CI/CD)
 - ☁️ Neon Serverless PostgreSQL
 
 ---
 
 # Setup Guide
+
+## Prerequisites
+- .NET 10 SDK
+- Node.js v18 or v20
+- ABP CLI
+- PostgreSQL (Neon recommended)
+
+---
+
+## Run Database Migrator
+
+```bash
+cd src/SponsorshipWorkflow.DbMigrator
+dotnet run
+```
+
+---
 
 ## Run Backend
 
@@ -51,6 +78,8 @@ https://sponsorship-workflow-l8d2.onrender.com/swagger/index.html
 cd src/SponsorshipWorkflow.HttpApi.Host
 dotnet run
 ```
+
+---
 
 ## Run Frontend
 
@@ -60,14 +89,11 @@ npm install
 npm start
 ```
 
-## Run Database Migrator
+---
 
-```bash
-cd src/SponsorshipWorkflow.DbMigrator
-dotnet run
-```
+## Database Configuration
 
-Update PostgreSQL connection strings in:
+Update connection strings:
 
 ```text
 src/SponsorshipWorkflow.HttpApi.Host/appsettings.json
@@ -80,17 +106,17 @@ src/SponsorshipWorkflow.DbMigrator/appsettings.json
 
 ## Admin (Full Permissions)
 
-- Email: `admin`  
+- Email: `admin@test.com`  
 - Password: `1q2w3E*`  
-- Access: Full system permissions (System Admin with all roles and privileges)
+- Access: Full system permissions (System Admin with complete RBAC access)
 
 ---
 
-## All Test Users
+## All Users
 
 | Email | Role | Password |
 |---|---|---|
-| admin@test.com | System Admin (All Permissions) | 1q2w3E* |
+| admin@test.com | System Admin | 1q2w3E* |
 | finance@test.com | Finance Admin | 1q2w3E* |
 | manager@test.com | Manager | 1q2w3E* |
 | requestor@test.com | Requestor | 1q2w3E* |
@@ -112,46 +138,73 @@ Also supported:
 
 ---
 
-# Key Features
+# Features
 
 - Role-Based Access Control (RBAC)
-- Sponsorship Request Form
+- Sponsorship Request Form (full lifecycle)
 - Draft / Submit workflow handling
-- Manager approval stage
-- Finance approval stage
+- Manager approval stage with permissions
+- Finance approval stage with validation
 - Workflow status tracking
-- Audit/history logging
-- Permission-based route guards
+- Audit and history logging
+- Permission-based route guards (Angular)
 - Swagger API documentation
 - Role-based dashboards per user type
 
 ---
 
-# Architecture
+# Architecture Overview
 
-## Backend
-- Domain Driven Design (DDD) with ABP Framework
-- Domain / Application / EF Core / API layers
-- OpenIddict-based authentication & authorization
+## Backend (ABP Framework)
+- Domain Driven Design (DDD)
+- Domain Layer
+- Application Layer
+- Entity Framework Core Layer
+- HTTP API Layer
+- OpenIddict authentication & authorization
 
-## Frontend
-- Angular modular architecture
+## Frontend (Angular)
+- Modular architecture
 - ABP Angular UI integration
-- Route guards + permission-based UI rendering
+- Route guards + permission-based rendering
+- Role-specific dashboard views
 
-## Workflow Logic
-- Centralized in application services
-- Strict state transition validation
-- Role + permission checks at every approval stage
+## Workflow Engine
+- Centralized in Application Services
+- Strict state transition rules
+- Permission-validated approvals at each stage
+- Audit logging for all transitions
 
 ---
 
-# TODO / Known Limitations
+# DevOps / Deployment
 
-- ⚠️ App reliability depends on Render free-tier hosting (may sleep or temporarily fail under inactivity)
-- 🔐 Improve identity & authentication robustness (token/session handling hardening)
-- 🛡️ Strengthen role-based access control validation consistency across edge cases
-- 🔑 Improve permission seeding & role initialization stability during first deployment
-- ⚙️ Improve deployment resilience (cold start handling / retry strategy)
-- 🧾 Improve audit consistency for failed/aborted workflow actions
-- 📦 Optimize backend startup performance on cold starts
+- 🐳 Backend containerized using Docker
+- 🚀 Backend deployed on Render (Free Tier)
+- ▲ Frontend deployed on Vercel (CI/CD pipeline)
+- ☁️ PostgreSQL hosted on Neon Serverless
+- 🔐 Authentication via OpenIddict
+
+---
+
+# AI-Assisted Development Note
+
+This project demonstrates the effective use of AI-assisted development tools to accelerate software engineering tasks such as debugging, code generation, and architectural exploration.
+
+Free-tier AI tools were used as supporting aids, while all core engineering decisions—including system design, ABP framework integration, workflow architecture, RBAC design, and deployment strategy—were independently designed and implemented.
+
+This reflects a modern development approach where AI is used as an augmentation tool within a structured engineering workflow, combined with CI/CD practices and real-world cloud deployment.
+
+---
+
+# TODO / Future Improvements
+
+- ⚠️ Improve reliability due to Render free-tier cold start delays and potential downtime
+- 🔐 Strengthen identity and authentication hardening (session/token robustness)
+- 🛡️ Improve RBAC edge-case consistency across workflow transitions
+- 🔑 Improve role/permission seeding stability during initial deployment
+- ⚙️ Enhance backend startup performance under cold-start conditions
+- 🧾 Improve audit trail consistency for failed or interrupted workflows
+- 📦 Further optimize CI/CD pipeline reliability and deployment speed
+
+---
