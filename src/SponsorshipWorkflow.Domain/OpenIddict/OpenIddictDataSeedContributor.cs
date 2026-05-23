@@ -69,7 +69,7 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
                 name: appClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
-                displayName: "Console Test / Angular Application",
+                displayName: "Sponsorship Workflow Angular",
                 secret: null,
                 grantTypes: new List<string> {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
